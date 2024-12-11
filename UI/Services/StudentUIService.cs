@@ -40,7 +40,7 @@ namespace HighSchool.UI.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ett fel uppstod: {ex.Message}");
+                Console.WriteLine($"Ett oväntat fel uppstod: {ex.Message}");
             }
         }
 
