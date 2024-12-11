@@ -1,4 +1,11 @@
-﻿using HighSchool.Core;
+﻿
+/* Johannes Brannelid
+ * Chas Academy
+ * LAB 3 (SQL & Object-Relational Mapping)
+ * Databases
+ */
+
+using HighSchool.Core;
 using HighSchool.Data;
 using HighSchool.UI;
 using HighSchool.UI.Services;
