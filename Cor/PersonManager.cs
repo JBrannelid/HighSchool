@@ -20,6 +20,36 @@ namespace HighSchool.Core
             _context = context;  // Initializes the _context field from HighSchoolContext
         }
 
+        // Centralized DB error message function
+        protected string GetDatabaseErrorMessage(Exception ex)
+        {
+            if (ex.InnerException is SqlException sqlEx)
+            {
+                switch (sqlEx.Number)
+                {
+                    case 2627: // Violation of unique constraint
+                        if (sqlEx.Message.Contains("UC_PIN"))
+                            return "Personnumret finns redan registrerat.";
+                        return "En unik begränsning har överträtts.";
+
+                    case 547: // Constraint violation
+                        if (sqlEx.Message.Contains("CHK_ValidGender"))
+                            return "Ogiltigt kön angivet. Använd Male, Female eller Other.";
+                        if (sqlEx.Message.Contains("CHK_ValidPIN"))
+                            return "Ogiltigt personnummerformat. Använd YYYYMMDD-XXXX.";
+                        if (sqlEx.Message.Contains("FK_People_Class"))
+                            return "Ogiltig klass vald.";
+                        if (sqlEx.Message.Contains("FK_People_Position"))
+                            return "Ogiltig position vald.";
+                        return "Ett valideringsfel uppstod.";
+
+                    default:
+                        return $"Ett databasfel uppstod: {sqlEx.Message}";
+                }
+            }
+            return $"Ett oväntat fel uppstod: {ex.Message}";
+        }
+
         // Add a new person (Student or employees). Validation error defines in the DB constraints 
         protected bool AddPerson(string firstName, string lastName, string pin,
                                  string gender, bool isEmployee, int? classId = null, int? positionId = null)
@@ -72,8 +102,8 @@ namespace HighSchool.Core
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(value: $"Ett databasfel uppstod: {ex}");
-                    return false; // Catch all exceptions in the compiler and throw to the user
+                    string errorMessage = GetDatabaseErrorMessage(ex);
+                    Console.WriteLine(errorMessage); return false; // Catch all exceptions in the compiler and throw to the user
                 }
             }
         }
@@ -95,7 +125,8 @@ namespace HighSchool.Core
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ett fel uppstod: {ex.Message}");
+                string errorMessage = GetDatabaseErrorMessage(ex);
+                Console.WriteLine(errorMessage);
                 return false;
             }
         }
@@ -114,7 +145,8 @@ namespace HighSchool.Core
             // If the person is not found. If deletion fails, an exception is caught and an error message is displayed.
             catch (Exception ex)
             {
-                Console.WriteLine($"Ett fel uppstod: {ex.Message}");
+                string errorMessage = GetDatabaseErrorMessage(ex);
+                Console.WriteLine(errorMessage);
                 return false;
             }
         }
