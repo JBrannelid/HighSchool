@@ -1,14 +1,12 @@
-# High School Management System
+﻿# High School Management System
 
 ## Overview
-A C# console application for managing a high school database using Entity Framework Core with a Database First approach
+A C# console application for managing a high school database using Entity Framework Core with a Database First approach. The application demonstrates basic database operations, input validation, and data presentation through a console interface.
 
 ## Features
-- Student Management (Add/Edit/Delete/View)
-- Employee Management (Teachers, Administrators, Principal)
-- Grade Tracking and Statistics
-- Class-based Student Organization
-- Basic Data Analysis and Reporting
+- Student Management
+- Employee Management
+- Grade Management
 
 ## Technical Stack
 - C# (.NET 8.0)
@@ -22,7 +20,7 @@ A C# console application for managing a high school database using Entity Framew
 - .NET 8.0 SDK
 
 ## Required Packages
-```
+```shell
 Microsoft.EntityFrameworkCore
 Microsoft.EntityFrameworkCore.SqlServer
 Microsoft.EntityFrameworkCore.Tools
@@ -32,27 +30,53 @@ Microsoft.Extensions.Configuration
 Microsoft.Extensions.Configuration.Json
 ```
 
-## Installation
+## Installation & Setup
+
+### 1. Database Setup
+```bash
+# Option 1: Using SQL Server Management Studio (SSMS)
+1. Open SSMS
+2. Connect to your SQL Server instance
+3. Open the file: ./SQL/SQLQuery_Labb3.sql
+4. Execute the script
+
+# Option 2: Using Command Line
+sqlcmd -S YOUR_SERVER -i ./SQL/SQLQuery_Labb3.sql
+```
+
+### 2. Application Setup
 1. Clone the repository
 ```bash
-git clone https://github.com/jbrannelid/highschool-management.git
+git clone https://github.com/JBrannelid/HighSchool.git
+cd highschool-management
 ```
 
 2. Configure the database connection
-   - Copy `appsettings.example.json` to `appsettings.json`
+   - Change Filename `appsettings.example.json` to `appsettings.json`
    - Update the connection string in `appsettings.json` with your database details:
      ```json
      {
        "ConnectionStrings": {
-         "DefaultConnection": "Server=YOUR_SERVER;Database=YOUR_DATABASE;Trusted_Connection=True;TrustServerCertificate=True;"
+         "DefaultConnection": "Server=YOUR_SERVER;Database=HighSchool;Trusted_Connection=True;TrustServerCertificate=True;"
        }
      }
      ```
 
-3. Build and run the application
+3. Build and run
 ```bash
 dotnet build
 dotnet run
+```
+
+## Project Structure
+```
+HighSchool/
+├── Core/                   # Business logic and data operations
+├── Data/                   # Database context and configuration
+├── Models/                 # Entity models
+├── SQL/                    # Database scripts
+├── UI/                     # User interface components
+└── Program.cs              # Application entry point
 ```
 
 ## Database Structure
@@ -66,20 +90,13 @@ dotnet run
   - Course Statistics
   - Recent Grades
 
-## Usage
-The application provides a menu-driven interface for:
-- Viewing and managing students
-- Managing employee records
-- Viewing grades and statistics
-- Generating basic reports
-
 ## Console
 The application uses a clear console-based interface for easy data visualization. Here's an example of the grade display:
 
 ```
-=== Senaste m�nadens betyg ===
+=== Senaste månadens betyg ===
 
-Student                   Kurs            Betyg    L�rare               Datum
+Student                   Kurs            Betyg    Lärare               Datum
 -------------------------------------------------------------------------------------
 Erik Johansson            Matematik       A        Lars Svensson        2024-12-06
 Olof Eriksson             Fysik           B        Johan Karlsson       2024-12-01
@@ -87,5 +104,6 @@ David Jonsson             Matematik       A        Lars Svensson        2024-12-
 Maria Karlsson            Kemi            C        Eva Nilsson          2024-11-28
 Marcus Olsson             Fysik           C        Johan Karlsson       2024-11-26
 -------------------------------------------------------------------------------------
-Tryck p� valfri tangent f�r att forts�tta...
+Tryck på valfri tangent för att fortsätta...
 ```
+
